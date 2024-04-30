@@ -1,0 +1,37 @@
+version: '3.9'
+services:
+  post_db:
+    build:
+        context: .
+        dockerfile: Dockerfile.postgres
+    user: postgres
+    image: postgres/test:v1
+    environment:
+      - POSTGRES_USER=${PS_USER}
+      - POSTGRES_PASSWORD=${PS_PASSWORD}
+      - PG_DATA:/var/lib/postgresql/data/pgdata
+      - POSTGRES_DB=${PS_DB}
+    healthcheck:
+      test: ["CMD-SHELL","pg_isready -U ${PS_USER} ${PS_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    restart: unless-stopped
+  api:
+    build:
+        context: .
+        dockerfile: Dockerfile.python
+    environment:
+      - DB_CONNSTR=postgresql://${PS_USER}:${PS_PASSWORD}@post_db:5432/${PS_DB}
+    ports:
+      - 8000:8000
+    links:
+      - post_db
+    restart: unless-stopped
+
+volumes:
+  db-data:

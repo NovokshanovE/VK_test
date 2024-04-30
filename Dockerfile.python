@@ -1,0 +1,28 @@
+FROM python:3.9
+
+WORKDIR /app
+
+# Install OS dependencies
+RUN apt-get update && apt-get install -qq -y \
+    git gcc build-essential libpq-dev --fix-missing --no-install-recommends \ 
+    && apt-get clean
+
+# Make sure we are using latest pip
+RUN pip install --upgrade pip
+
+# Copy requirements.txt
+COPY requirements.txt requirements.txt
+
+# ... install of the requirements
+RUN pip install -r requirements.txt
+
+# ... copy all the script into the app
+COPY ./py_script/ /app/
+
+# ... select the variable of environment where is going to execute python
+ENV PYTHONPATH "${PYTHONPATH}:/app/"
+
+# ... and expose the desired port
+EXPOSE 8000
+
+CMD ["uvicorn","api:main","--host","0.0.0.0"]
