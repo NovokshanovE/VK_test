@@ -7,17 +7,17 @@ services:
     user: postgres
     image: postgres/test:v1
     environment:
-      - POSTGRES_USER=${PS_USER}
-      - POSTGRES_PASSWORD=${PS_PASSWORD}
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
       - PG_DATA:/var/lib/postgresql/data/pgdata
-      - POSTGRES_DB=${PS_DB}
+      - POSTGRES_DB=bot_farm
     healthcheck:
-      test: ["CMD-SHELL","pg_isready -U ${PS_USER} ${PS_PASSWORD}"]
+      test: ["CMD-SHELL","pg_isready -U postgres postgres"]
       interval: 10s
       timeout: 5s
       retries: 5
     ports:
-      - "5432:5432"
+      - "5434:5432"
     volumes:
       - db-data:/var/lib/postgresql/data
     restart: unless-stopped
@@ -26,7 +26,7 @@ services:
         context: .
         dockerfile: Dockerfile.python
     environment:
-      - DB_CONNSTR=postgresql://${PS_USER}:${PS_PASSWORD}@post_db:5432/${PS_DB}
+      - DB_CONNSTR=postgresql://postgres:postgres@post_db:5434/bot_farm}
     ports:
       - 8000:8000
     links:

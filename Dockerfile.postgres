@@ -4,11 +4,11 @@ FROM postgres
 RUN mkdir -p /home/src
 
 # Copy source data 
-COPY ./src /home/src
-COPY ./db_script/* /docker-entrypoint-initdb.d
+# COPY ./src /home/src
+# COPY ./db_script/* /docker-entrypoint-initdb.d
 
 # How to create a main table 
-RUN chmod a+r /docker-entrypoint-initdb.d/*
+# RUN chmod a+r /docker-entrypoint-initdb.d/*
 
 # Expose the port
 EXPOSE 6666
