@@ -1,5 +1,5 @@
 from uuid import UUID
-from pydantic import BaseModel, SecretStr
+from pydantic import BaseModel
 
 class UserBase(BaseModel):
     login: str
@@ -8,7 +8,7 @@ class UserBase(BaseModel):
     domain: str
 
 class UserCreate(UserBase):
-    password: SecretStr
+    password: str
 
 class User(UserBase):
     id : UUID
