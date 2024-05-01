@@ -1,16 +1,22 @@
-from pydantic import BaseModel
+from uuid import UUID
+from pydantic import BaseModel, SecretStr
 
 class UserBase(BaseModel):
-    email: str
-    name: str
+    login: str
+    project_id: UUID
+    env: str
+    domain: str
 
 class UserCreate(UserBase):
-    pass 
+    password: SecretStr
 
 class User(UserBase):
-    id : int
-    is_active : bool
+    id : UUID
+    locktime : bool
     
 
     class Config:
         orm_model = True
+        
+        
+

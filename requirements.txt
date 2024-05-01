@@ -6,6 +6,7 @@ greenlet==3.0.3
 h11==0.14.0
 idna==3.7
 iniconfig==2.0.0
+MarkupSafe==2.1.5
 packaging==24.0
 pluggy==1.5.0
 psycopg2==2.9.9
@@ -19,3 +20,4 @@ SQLAlchemy==2.0.29
 starlette==0.37.2
 typing_extensions==4.11.0
 uvicorn==0.29.0
+Werkzeug==3.0.2
