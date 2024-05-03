@@ -1,23 +1,23 @@
 import datetime
 import uuid
-from sqlalchemy import Boolean, Column, String, UUID, DateTime
-import hashlib
-from .database import Base, SECRET_KEY
+from sqlalchemy import Column, String, UUID, DateTime, TIMESTAMP
+from .database import Base
 import bcrypt
+
 
 class User(Base):
     __tablename__ = "users"
-    id = Column(UUID(as_uuid=True),primary_key=True, default=uuid.uuid4)
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     created_ad = Column(DateTime(False), default=datetime.datetime.now())
     login = Column(String(255), unique=True)
-    password = Column()
+    password = Column(String(255))
     project_id = Column(UUID(as_uuid=True), default=uuid.uuid4)
     env = Column(String(255))
     domain = Column(String(255))
-    locktime = Column(Boolean,default=False)
-    
+    locktime = Column(DateTime(False), default=None)
+
     def set_password(password):
-        
+
         password = bcrypt.hashpw(password.encode(), bcrypt.gensalt())
         return password
 
