@@ -5,14 +5,14 @@ from dotenv import load_dotenv
 import os
 
 load_dotenv()
-DATABASE_PORT = os.getenv("DATABASE_PORT")
-POSTGRES_PASSWORD = os.getenv("POSTGRES_PASSWORD")
-POSTGRES_USER = os.getenv("POSTGRES_USER")
-POSTGRES_DB = os.getenv("POSTGRES_DB")
-POSTGRES_HOST = os.getenv("POSTGRES_HOST")
-POSTGRES_HOSTNAME = os.getenv("POSTGRES_HOSTNAME")
+PORT = os.getenv("DATABASE_PORT")
+PASSWORD = os.getenv("POSTGRES_PASSWORD")
+USER = os.getenv("POSTGRES_USER")
+DB = os.getenv("POSTGRES_DB")
+HOST = os.getenv("POSTGRES_HOST")
+HOSTNAME = os.getenv("POSTGRES_HOSTNAME")
 SECRET_KEY = os.getenv("SECRET_KEY")
-DB_URL = f"{POSTGRES_HOST}://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_HOSTNAME}:{DATABASE_PORT}/{POSTGRES_DB}"
+DB_URL = f"{HOST}://{USER}:{PASSWORD}@{HOSTNAME}:{PORT}/{DB}"
 print(DB_URL)
 
 engine = create_engine(DB_URL, echo=True)

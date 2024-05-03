@@ -1,6 +1,6 @@
 import datetime
 import uuid
-from sqlalchemy import Column, String, UUID, DateTime, TIMESTAMP
+from sqlalchemy import Column, String, UUID, DateTime
 from .database import Base
 import bcrypt
 
@@ -16,11 +16,11 @@ class User(Base):
     domain = Column(String(255))
     locktime = Column(DateTime(False), default=None)
 
+    @staticmethod
     def set_password(password):
-
         password = bcrypt.hashpw(password.encode(), bcrypt.gensalt())
         return password
-
-    def check_password(self, password):
-        valid = bcrypt.checkpw(password.encode(), self.password)
-        return valid
+    # @staticmethod
+    # def check_password(self, password):
+    #     valid = bcrypt.checkpw(password.encode(), self.password)
+    #     return valid

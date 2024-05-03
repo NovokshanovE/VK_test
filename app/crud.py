@@ -46,6 +46,7 @@ def acquire_lock(db: Session, user_id: str, user: schemas.UserLock):
 
 
 def release_lock(db: Session, user_id: str):
-    db.query(models.User).filter(models.User.id == user_id).update({"locktime": None})
+    db.query(models.User)\
+        .filter(models.User.id == user_id).update({"locktime": None})
     db.commit()
     return
