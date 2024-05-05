@@ -6,6 +6,12 @@ import bcrypt
 
 
 class User(Base):
+    """Класс описывающий таблицу User в  БД
+
+    Args:
+        Base (_type_): базовый класс, от которого мы наследуемся, для описания
+        таблицы User.
+    """
     __tablename__ = "users"
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     created_ad = Column(DateTime(False), default=datetime.datetime.now())
