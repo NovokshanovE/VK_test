@@ -1,14 +1,53 @@
-version: '3'
+# version: '3'
+# services:
+#   postgres:
+#     image: postgres
+#     container_name: postgres
+#     ports:
+#       - '6500:5432'
+#     restart: always
+#     env_file:
+#       - ./.env
+#     volumes:
+#       - postgres-db:/var/lib/postgresql/data
+# volumes:
+#   postgres-db:
+version: '3.9'
 services:
-  postgres:
+  app_with_db:
+    build:
+        context: .
+        dockerfile: Dockerfile.python
+    user: postgres
     image: postgres
-    container_name: postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - PG_DATA:/var/lib/postgresql/data/pgdata
+      - POSTGRES_DB=bot_farm
+    healthcheck:
+      test: ["CMD-SHELL","pg_isready -U postgres postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     ports:
-      - '6500:5432'
-    restart: always
-    env_file:
-      - ./.env
+      - "8000:8000"
     volumes:
-      - postgres-db:/var/lib/postgresql/data
+      - db-data:/var/lib/postgresql/data
+    restart: unless-stopped
+  # app:
+  #   build:
+  #       context: .
+  #       dockerfile: Dockerfile.python
+  #   environment:
+  #     - DB_CONNSTR=postgresql://postgres:postgres@post_db:5434/bot_farm}
+  #   ports:
+  #     - 8000:8000
+  #   links:
+  #     - post_db
+  #   restart: unless-stopped
+  #   depends_on:
+  #     - post_db
+
 volumes:
-  postgres-db:
+  db-data:

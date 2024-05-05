@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from . import models, schemas
 
 
-def get_user(db: Session, user_id: int):
+def get_user(db: Session, user_id: str):
     """Функция для получения данных о пользователе из БД по id.
 
     Args:
@@ -46,7 +46,7 @@ def get_users(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.User).offset(skip).limit(limit).all()
 
 
-def create_user(db: Session, user: schemas.UserCreate):
+def create_user(db: Session, user: schemas.UserCreate) -> schemas.User:
     """ Функция для создания пользователя по шаблону.
 
     Args:
@@ -54,7 +54,7 @@ def create_user(db: Session, user: schemas.UserCreate):
         user (schemas.UserCreate): Данные по шаблону schemas.UserCreate
 
     Returns:
-        User: Возвращаются данные о созданном пользователе.
+        schemas.User: Возвращаются данные о созданном пользователе.
     """
     db_user = models.User(
         login=user.login,
@@ -68,6 +68,7 @@ def create_user(db: Session, user: schemas.UserCreate):
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
+    # print(db_user.id)
     return db_user
 
 
