@@ -18,8 +18,8 @@ class User(Base):
     login = Column(String(255), unique=True)
     password = Column(String(255))
     project_id = Column(UUID(as_uuid=True), default=uuid.uuid4)
-    env = Column(String(255))
-    domain = Column(String(255))
+    env = Column(String(255), default="stage")
+    domain = Column(String(255), default="regular")
     locktime = Column(DateTime(False), default=None)
 
     @staticmethod

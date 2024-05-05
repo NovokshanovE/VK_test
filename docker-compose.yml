@@ -1,23 +1,9 @@
-# version: '3'
-# services:
-#   postgres:
-#     image: postgres
-#     container_name: postgres
-#     ports:
-#       - '6500:5432'
-#     restart: always
-#     env_file:
-#       - ./.env
-#     volumes:
-#       - postgres-db:/var/lib/postgresql/data
-# volumes:
-#   postgres-db:
 version: '3.9'
 services:
-  app_with_db:
+  post_db:
     build:
         context: .
-        dockerfile: Dockerfile.python
+        dockerfile: Dockerfile.postgres
     user: postgres
     image: postgres
     environment:
@@ -31,23 +17,28 @@ services:
       timeout: 5s
       retries: 5
     ports:
-      - "8000:8000"
+      - "5434:5432"
     volumes:
       - db-data:/var/lib/postgresql/data
     restart: unless-stopped
-  # app:
-  #   build:
-  #       context: .
-  #       dockerfile: Dockerfile.python
-  #   environment:
-  #     - DB_CONNSTR=postgresql://postgres:postgres@post_db:5434/bot_farm}
-  #   ports:
-  #     - 8000:8000
-  #   links:
-  #     - post_db
-  #   restart: unless-stopped
-  #   depends_on:
-  #     - post_db
+
+    
+  api:
+    build:
+        context: .
+        dockerfile: Dockerfile.python
+    environment:
+      - DB_CONNSTR=postgresql://postgres:postgres@post_db:5434/bot_farm}
+    ports:
+      - 8000:4444
+    links:
+      - post_db
+    
+    restart: unless-stopped
+
 
 volumes:
   db-data:
+
+
+  

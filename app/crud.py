@@ -56,11 +56,12 @@ def create_user(db: Session, user: schemas.UserCreate) -> schemas.User:
     Returns:
         schemas.User: Возвращаются данные о созданном пользователе.
     """
+    
     db_user = models.User(
         login=user.login,
         project_id=user.project_id,
-        env=user.env,
-        domain=user.domain,
+        env=user.env.lower(),
+        domain=user.domain.lower(),
         password=models.User.set_password(user.password),
         locktime=None,
     )

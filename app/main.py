@@ -35,6 +35,12 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     Returns:
         Возвращается ответ в формате json по шаблону schemas.User.
     """
+    if user.env is not None and user.env not in ['prod', 'preprod', 'stage']:
+        raise HTTPException(status_code=401, detail="wrong env, env belongs \
+            to the set ['prod', 'preprod', 'stage']")
+    if user.domain is not None and user.domain not in ['canary', 'regular']:
+        raise HTTPException(status_code=401, detail="wrong domain, domain \
+            belongs to the set ['canary', 'regular']")
     db_user = crud.get_user_by_login(db, login=user.login)
     if db_user:
         raise HTTPException(status_code=400, detail="login already registered")
